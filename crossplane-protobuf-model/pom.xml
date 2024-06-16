@@ -8,7 +8,7 @@
         <artifactId>crossplane-parent</artifactId>
         <version>${revision}</version>
     </parent>
-    
+
     <artifactId>crossplane-protobuf-model</artifactId>
     <description>Crossplane coposite function protobuf</description>
     <!-- DEPENDENCIES -->
