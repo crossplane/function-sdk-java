@@ -1,9 +1,10 @@
 name: Java CI with Maven
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       releaseversion:
+        type: string
         description: 'Version to reelase'
         required: true
 
