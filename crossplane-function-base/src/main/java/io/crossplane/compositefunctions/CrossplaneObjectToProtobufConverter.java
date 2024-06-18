@@ -5,12 +5,19 @@ import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
 import io.crossplane.compositefunctions.protobuf.Resource;
 
-
-public class CrossplaneObjectToProtobufConverter {
+/**
+ * Helper class for converting Java Objects into protobuf Structs within the Resource object
+ */
+public final class CrossplaneObjectToProtobufConverter {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private static final JsonFormat.Parser parser = JsonFormat.parser();
 
+    /**
+     * Convert a java object to a resource
+     * @param object The object to convert
+     * @return The Resource with the object wrapped as a Struct
+     */
     public static Resource convertToResource(Object object) {
         try {
             Resource.Builder builder = Resource.newBuilder();
@@ -21,6 +28,11 @@ public class CrossplaneObjectToProtobufConverter {
 
     }
 
+    /**
+     * Convert a java object to a struct
+     * @param object The object to convert
+     * @return The object as a protobuf struct
+     */
     public static Struct convertToStruct(Object object) {
         try {
             Struct.Builder structBuilder = Struct.newBuilder();

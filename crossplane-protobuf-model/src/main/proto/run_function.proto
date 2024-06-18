@@ -25,7 +25,6 @@ option go_package = "github.com/crossplane/crossplane/apis/apiextensions/fn/prot
 option java_package = "io.crossplane.compositefunctions.protobuf";
 option java_multiple_files = true;
 
-
 // A FunctionRunnerService is a Composition Function.
 service FunctionRunnerService {
   // RunFunction runs the Composition Function.
@@ -204,7 +203,7 @@ message Resource {
   google.protobuf.Struct resource = 1;
 
   // The resource's connection details.
-  //
+  // 
   // * Crossplane will set this field in a RunFunctionRequest to communicate the
   //   the observed connection details of a composite or composed resource.
   //
@@ -217,7 +216,7 @@ message Resource {
   map<string, bytes> connection_details = 2;
 
   // Ready indicates whether the resource should be considered ready.
-  //
+  // 
   // * Crossplane will never set this field in a RunFunctionRequest.
   //
   // * A Function should set this field to READY_TRUE in a RunFunctionResponse

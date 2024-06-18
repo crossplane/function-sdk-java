@@ -7,6 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
+/**
+ * The base class for a function to implement. Extend this class and implement the abstract runFunction method.
+ * This class adds any desired resources from a previously called function into the returned desired map.
+ * Any returned objects from the runFunction in the desiredresources map will be converted to protobuf resources,
+ * so the implemented method can work with the regular Java objects.
+ */
 public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServiceGrpc.FunctionRunnerServiceImplBase {
 
     private static final Logger logger = LoggerFactory.getLogger(CrossplaneCompositeFunctionBase.class);
@@ -19,6 +25,7 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             State desired = request.getDesired();
 
             // Copy existing state into new desired state
+            // Should these be sent to the function? Probably?
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
             CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
@@ -52,6 +59,11 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
 
     }
 
+    /**
+     * The main method where the logic should live.
+     * @param crossplaneFunctionRequest The request object with the inputs from Crossplane added to it
+     * @return The response with desired resources, resource selectors and function results
+     */
     public abstract CrossplaneFunctionResponse runFunction(CrossplaneFunctionRequest crossplaneFunctionRequest);
 
 }
