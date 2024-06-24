@@ -25,15 +25,16 @@ public class CrossplaneCompositeResourceService {
 
 
 
-    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(T functionDefinition,
-                                                                                             boolean addReadyFunction,
+    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(String functionName,
+                                                                                             List<String> additionalFunctions,
+                                                                                             T functionDefinition,
                                                                                              KubernetesClient kubernetesClient) {
 
         CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(functionDefinition);
 
         registerOrUpdateCompositeResourceDefinition(compositeResourceDefinition, kubernetesClient);
 
-        Composition composition = createCompositionDefinition(functionDefinition, addReadyFunction);
+        Composition composition = createCompositionDefinition(functionName, additionalFunctions, functionDefinition);
 
         registerOrUpdateCompositeResourceDefinition(composition, kubernetesClient);
 
@@ -106,11 +107,13 @@ public class CrossplaneCompositeResourceService {
         }
     }
 
-    private static <T extends CustomResource<?, Void>> Composition createCompositionDefinition(T functionDefinition, boolean addReadyFunction) {
+    private static <T extends CustomResource<?, Void>> Composition createCompositionDefinition(
+            String functionName, List<String> additionalFunctions,
+            T functionDefinition) {
 
         Composition composition = new Composition();
 
-        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata("kalypso-" + functionDefinition.getKind().toLowerCase() + "-composition"));
+        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata(functionDefinition.getKind().toLowerCase() + "-composition"));
         CompositionSpec compositionSpec = new CompositionSpec();
 
         CompositeTypeRef compositeTypeRef = new CompositeTypeRef();
@@ -122,11 +125,10 @@ public class CrossplaneCompositeResourceService {
 
         List<Pipeline> pipelineList = new ArrayList<>();
 
-        pipelineList.add(createPipeline("kalypso-" + functionDefinition.getKind().toLowerCase() + "-function"));
+        pipelineList.add(createPipeline(functionName));
 
-        if (addReadyFunction) {
-            pipelineList.add(createPipeline("kalypso-ready-function"));
-        }
+        additionalFunctions.forEach(s -> pipelineList.add(createPipeline(s)));
+
         compositionSpec.setPipeline(pipelineList);
         composition.setSpec(compositionSpec);
         return composition;
