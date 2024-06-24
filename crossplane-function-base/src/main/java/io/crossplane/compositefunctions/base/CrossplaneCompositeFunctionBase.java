@@ -33,9 +33,8 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
             CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
-                    request.getExtraResourcesMap(),  request.getDesired());
+                    request.getExtraResourcesMap(), request.getCredentialsMap(),  request.getDesired());
 
-            //  request.getCredentialsMap(),
 
             logger.debug("Calling method with implemented logic");
             CrossplaneFunctionResponse crossplaneFunctionResponse = runFunction(crossplaneFunctionRequest);
