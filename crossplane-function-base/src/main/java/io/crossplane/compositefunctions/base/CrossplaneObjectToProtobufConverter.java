@@ -1,4 +1,4 @@
-package io.crossplane.compositefunctions;
+package io.crossplane.compositefunctions.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Struct;
