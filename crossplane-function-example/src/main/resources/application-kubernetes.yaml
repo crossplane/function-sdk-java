@@ -1,0 +1,13 @@
+grpc:
+  server:
+    security:
+      # When runnin on kubernetes, crossplane expects a TLS endpoint to be presented, and
+      # injects the pod with the certificate and ca store to use. We just point to the mounted files
+      # in our config to be compliant.
+      # See also the ExampleFunctionApplication class, as we need to register bouncycastle as the provider for these
+      # certificates to work in Java
+      enabled: true
+      client-auth: optional
+      certificate-chain: file:///tls/server/tls.crt
+      private-key: file:///tls/server/tls.key
+      trust-cert-collection: file:///tls/server/ca.crt

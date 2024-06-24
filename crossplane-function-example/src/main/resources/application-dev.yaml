@@ -1,0 +1,5 @@
+grpc:
+  server:
+    security:
+      # For local testing we disable the security setting. This enables us to use the crossplane beta render functionality
+      enabled: false

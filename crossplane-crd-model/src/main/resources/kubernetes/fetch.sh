@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release="release-1.16"
+release="release-1.14"
 
 apiextensions=$(gh api --jq '.[].name' "/repos/crossplane/crossplane/contents/cluster/crds?ref=${release}" | grep apiextensions)
 

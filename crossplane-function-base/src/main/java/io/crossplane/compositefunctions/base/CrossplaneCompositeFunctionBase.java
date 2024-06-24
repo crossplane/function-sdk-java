@@ -1,6 +1,10 @@
-package io.crossplane.compositefunctions;
+package io.crossplane.compositefunctions.base;
 
-import io.crossplane.compositefunctions.protobuf.*;
+
+import io.crossplane.compositefunctions.protobuf.FunctionRunnerServiceGrpc;
+import io.crossplane.compositefunctions.protobuf.RunFunctionRequest;
+import io.crossplane.compositefunctions.protobuf.RunFunctionResponse;
+import io.crossplane.compositefunctions.protobuf.State;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,11 +29,12 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             State desired = request.getDesired();
 
             // Copy existing state into new desired state
-            // Should these be sent to the function? Probably?
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
             CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
-                    request.getExtraResourcesMap(), request.getCredentialsMap());
+                    request.getDesired());
+
+            // request.getExtraResourcesMap(), request.getCredentialsMap()
 
             logger.debug("Calling method with implemented logic");
             CrossplaneFunctionResponse crossplaneFunctionResponse = runFunction(crossplaneFunctionRequest);
@@ -39,15 +44,26 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
                 desiredBuilder.putResources(entry.getKey(), CrossplaneObjectToProtobufConverter.convertToResource(entry.getValue()));
             }
 
-            Requirements requirements = Requirements.newBuilder()
-                    .putAllExtraResources(crossplaneFunctionResponse.resourceSelectors())
-                    .build();
+            RunFunctionResponse.Builder responseBuilder = RunFunctionResponse.newBuilder();
 
-            RunFunctionResponse runFunctionResponse = RunFunctionResponse
-                    .newBuilder()
-                    .setRequirements(requirements)
-                    .addAllResults(crossplaneFunctionResponse.results())
-                    .setDesired(desiredBuilder.build())
+            /*
+            if (! crossplaneFunctionResponse.resourceSelectors().isEmpty()) {
+                Requirements requirements = Requirements.newBuilder()
+                        .putAllExtraResources(crossplaneFunctionResponse.resourceSelectors())
+                        .build();
+                responseBuilder.setRequirements(requirements);
+            }
+            */
+
+            if (! crossplaneFunctionResponse.results().isEmpty()) {
+                responseBuilder.addAllResults(crossplaneFunctionResponse.results());
+            }
+
+            if (desiredBuilder.getResourcesCount() > 0) {
+                responseBuilder.setDesired(desiredBuilder.build());
+            }
+
+            RunFunctionResponse runFunctionResponse = responseBuilder
                     .build();
 
             responseObserver.onNext(runFunctionResponse);
