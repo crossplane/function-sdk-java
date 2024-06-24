@@ -2,6 +2,7 @@ package io.crossplane.compositefunctions.base;
 
 
 import io.crossplane.compositefunctions.protobuf.FunctionRunnerServiceGrpc;
+import io.crossplane.compositefunctions.protobuf.Requirements;
 import io.crossplane.compositefunctions.protobuf.RunFunctionRequest;
 import io.crossplane.compositefunctions.protobuf.RunFunctionResponse;
 import io.crossplane.compositefunctions.protobuf.State;
@@ -32,9 +33,9 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
             CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
-                    request.getDesired());
+                    request.getExtraResourcesMap(),  request.getDesired());
 
-            // request.getExtraResourcesMap(), request.getCredentialsMap()
+            //  request.getCredentialsMap(),
 
             logger.debug("Calling method with implemented logic");
             CrossplaneFunctionResponse crossplaneFunctionResponse = runFunction(crossplaneFunctionRequest);
@@ -46,14 +47,14 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
 
             RunFunctionResponse.Builder responseBuilder = RunFunctionResponse.newBuilder();
 
-            /*
+
             if (! crossplaneFunctionResponse.resourceSelectors().isEmpty()) {
                 Requirements requirements = Requirements.newBuilder()
                         .putAllExtraResources(crossplaneFunctionResponse.resourceSelectors())
                         .build();
                 responseBuilder.setRequirements(requirements);
             }
-            */
+
 
             if (! crossplaneFunctionResponse.results().isEmpty()) {
                 responseBuilder.addAllResults(crossplaneFunctionResponse.results());
