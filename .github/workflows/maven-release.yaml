@@ -26,7 +26,7 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
       - name: Set the revision property
-        run: mvn versions:set-property -Dproperty=revision "-DnewVersion==${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
+        run: mvn versions:set-property -Dproperty=revision "-DnewVersion=${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
       - name: Build with Maven
         run: mvn -B deploy --file pom.xml -Pdeploy
         env:
@@ -40,5 +40,6 @@ jobs:
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
-              --title="${tag#v}" \
-              --generate-notes
+              --title="v${tag#v}" \
+              --generate-notes \
+              --target "$GITHUB_SHA"
