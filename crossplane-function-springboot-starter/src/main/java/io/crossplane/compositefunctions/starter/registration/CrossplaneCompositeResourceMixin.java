@@ -3,6 +3,10 @@ package io.crossplane.compositefunctions.starter.registration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 
+/**
+ * Class to aid in setting up autoregistration. Used to ignore the default
+ * fields when creating the openapiv3schema
+ */
 public abstract class CrossplaneCompositeResourceMixin {
 
     @JsonIgnore
