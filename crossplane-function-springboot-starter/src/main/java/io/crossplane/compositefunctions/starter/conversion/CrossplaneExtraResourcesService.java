@@ -4,10 +4,15 @@ import com.google.protobuf.util.JsonFormat;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
-
-@Component
+/**
+ * Class that helps with the extra resources map and also to create ResourceSelector in order to get extra resources
+ * to the function
+ *
+ * Commented out in 1.14
+ *
+ * @since 1.15
+ */
 public class CrossplaneExtraResourcesService {
 
     private static final Logger logger = LoggerFactory.getLogger(CrossplaneExtraResourcesService.class);

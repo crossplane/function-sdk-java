@@ -19,22 +19,33 @@ import io.fabric8.kubernetes.client.dsl.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.crossplane.compositefunctions.starter.registration.CrossplanJsonSchemaGenerator.getOpenAPIV3Schema;
+import static io.crossplane.compositefunctions.starter.registration.CrossplaneJsonSchemaGenerator.getOpenAPIV3Schema;
 
+/**
+ * Service that can register the composite resource together with a function,
+ * which can also add other function to the pipeline definition
+ */
 public class CrossplaneCompositeResourceService {
 
 
-
-    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(String functionName,
-                                                                                             List<String> additionalFunctions,
-                                                                                             T functionDefinition,
+    /**
+     *  Register or update the composite resource definition using the provided client.
+     *  The client needs access to register the types
+     *
+     * @param pipelineFunctions A list of functionnames to add to the composition pipeline
+     * @param compositionDefinition The object that has the composition definiton
+     * @param kubernetesClient The client to use to register the definition
+     * @param <T> Must extend CustomResource
+     */
+    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(List<String> pipelineFunctions,
+                                                                                             T compositionDefinition,
                                                                                              KubernetesClient kubernetesClient) {
 
-        CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(functionDefinition);
+        CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(compositionDefinition);
 
         registerOrUpdateCompositeResourceDefinition(compositeResourceDefinition, kubernetesClient);
 
-        Composition composition = createCompositionDefinition(functionName, additionalFunctions, functionDefinition);
+        Composition composition = createCompositionDefinition(pipelineFunctions, compositionDefinition);
 
         registerOrUpdateCompositeResourceDefinition(composition, kubernetesClient);
 
@@ -52,41 +63,49 @@ public class CrossplaneCompositeResourceService {
         }
     }
 
-    public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T functionDefinition) { //}, Class functionMixin) {
+    /**
+     * Create a CompositeResourceDefinition based on the provided CustomResource
+     * If Namespaced, ClaimNames will be added in addition to Names.
+     *
+     * @param compositionDefinition The composition definition
+     * @return A CompositeResourceDefintion based on the provided CustomResource
+     * @param <T> Must extend CustomResource
+     */
+    public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T compositionDefinition) { //}, Class functionMixin) {
 
         CompositeResourceDefinition compositeResourceDefinition = new CompositeResourceDefinition();
-        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(functionDefinition.getCRDName()));
+        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getCRDName()));
 
         CompositeResourceDefinitionSpec spec = new CompositeResourceDefinitionSpec();
-        spec.setGroup(functionDefinition.getGroup());
+        spec.setGroup(compositionDefinition.getGroup());
 
         String namePrefix = "";
 
-        if (functionDefinition instanceof Namespaced) {
+        if (compositionDefinition instanceof Namespaced) {
             ClaimNames claimNames = new ClaimNames();
-            claimNames.setKind(functionDefinition.getKind());
-            claimNames.setPlural(functionDefinition.getPlural());
-            claimNames.setSingular(functionDefinition.getSingular());
+            claimNames.setKind(compositionDefinition.getKind());
+            claimNames.setPlural(compositionDefinition.getPlural());
+            claimNames.setSingular(compositionDefinition.getSingular());
             spec.setClaimNames(claimNames);
             namePrefix = "x";
         }
 
         Names names = new Names();
-        names.setKind(namePrefix + functionDefinition.getKind());
-        names.setPlural(namePrefix + functionDefinition.getPlural());
-        names.setSingular(namePrefix + functionDefinition.getSingular());
+        names.setKind(namePrefix + compositionDefinition.getKind());
+        names.setPlural(namePrefix + compositionDefinition.getPlural());
+        names.setSingular(namePrefix + compositionDefinition.getSingular());
         spec.setNames(names);
 
         Versions versions = new Versions();
-        versions.setName(functionDefinition.getVersion());
+        versions.setName(compositionDefinition.getVersion());
 
         // This is not 100%. isStorage vs referencable. Need to check the crossplan docs
-        versions.setReferenceable(functionDefinition.isStorage());
-        versions.setServed(functionDefinition.isServed());
+        versions.setReferenceable(compositionDefinition.isStorage());
+        versions.setServed(compositionDefinition.isServed());
 
 
         Schema schema = new Schema();
-        schema.setOpenAPIV3Schema(getOpenAPIV3Schema(functionDefinition.getClass(), CrossplaneCompositeResourceMixin.class));
+        schema.setOpenAPIV3Schema(getOpenAPIV3Schema(compositionDefinition.getClass(), CrossplaneCompositeResourceMixin.class));
 
         versions.setSchema(schema);
         spec.setVersions(List.of(versions));
@@ -108,26 +127,23 @@ public class CrossplaneCompositeResourceService {
     }
 
     private static <T extends CustomResource<?, Void>> Composition createCompositionDefinition(
-            String functionName, List<String> additionalFunctions,
-            T functionDefinition) {
+            List<String> pipelineFunctions, T compositionDefinition) {
 
         Composition composition = new Composition();
 
-        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata(functionDefinition.getKind().toLowerCase() + "-composition"));
+        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getKind().toLowerCase() + "-composition"));
         CompositionSpec compositionSpec = new CompositionSpec();
 
         CompositeTypeRef compositeTypeRef = new CompositeTypeRef();
-        compositeTypeRef.setKind(functionDefinition.getKind());
-        compositeTypeRef.setApiVersion(functionDefinition.getApiVersion());
+        compositeTypeRef.setKind(compositionDefinition.getKind());
+        compositeTypeRef.setApiVersion(compositionDefinition.getApiVersion());
 
         compositionSpec.setCompositeTypeRef(compositeTypeRef);
         compositionSpec.setMode(CompositionSpec.Mode.PIPELINE);
 
         List<Pipeline> pipelineList = new ArrayList<>();
 
-        pipelineList.add(createPipeline(functionName));
-
-        additionalFunctions.forEach(s -> pipelineList.add(createPipeline(s)));
+        pipelineFunctions.forEach(s -> pipelineList.add(createPipeline(s)));
 
         compositionSpec.setPipeline(pipelineList);
         composition.setSpec(compositionSpec);
