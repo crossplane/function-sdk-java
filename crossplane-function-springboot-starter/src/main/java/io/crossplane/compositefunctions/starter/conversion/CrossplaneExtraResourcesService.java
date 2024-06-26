@@ -10,15 +10,20 @@ import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
-@Component
+/**
+ * Class that helps with the extra resources map and also to create ResourceSelector in order to get extra resources
+ * to the function
+ *
+ * Commented out in 1.14
+ *
+ * @since 1.15
+ */
 public class CrossplaneExtraResourcesService {
 
     private static final Logger logger = LoggerFactory.getLogger(CrossplaneExtraResourcesService.class);
