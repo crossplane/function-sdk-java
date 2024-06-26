@@ -8,16 +8,25 @@ import io.crossplane.compositefunctions.starter.exception.CrossplaneUnmarshallEx
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
+/**
+ * Class with helper methods for observable resources.
+ */
 public class CrossplaneObservableService {
 
     private static final Logger logger = LoggerFactory.getLogger(CrossplaneObservableService.class);
     private final JsonFormat.Printer printer = JsonFormat.printer();
 
+    /**
+     * Retrieve a resource from the observedstate and convert in into class T
+     * @param resourceName The resource name to find in the observed state
+     * @param observedState The observed state from the crossplane input
+     * @param clazz The class/type to create
+     * @return An instance of class T from the observed state
+     * @param <T> The class/type to create
+     */
     public <T> Optional<T> getObservableResource(String resourceName, State observedState, Class<T> clazz) {
         Resource observedResource = observedState.getResourcesOrDefault(resourceName, null);
         Optional<T> result = Optional.empty();

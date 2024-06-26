@@ -12,8 +12,17 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class CrossplanJsonSchemaGenerator {
+/**
+ * Generator of OpenApiV3Schema used when creating CompositeResourceDefinition
+ */
+public class CrossplaneJsonSchemaGenerator {
 
+    /**
+     * Create the OpenApiV3Schema
+     * @param clazz The class to create the schema from
+     * @param mixin A mixin to use when Jackson maps the class
+     * @return A OpenAPIV3Schema based on the given class
+     */
     public static OpenAPIV3Schema getOpenAPIV3Schema(Class clazz, Class mixin) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -52,6 +61,11 @@ public class CrossplanJsonSchemaGenerator {
 
     }
 
+    /**
+     * Get the JSONSchemaProps from the class
+     * @param clazz The class to get the schema from
+     * @return The schemaprops based on the provided class
+     */
     public static JSONSchemaProps getJsonSchema(Class clazz) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -73,7 +87,9 @@ public class CrossplanJsonSchemaGenerator {
     }
 
 
-
+    /**
+     * Class just use to ignore the ID property that automatically gets added. 
+     */
     private abstract class IdIgnorer {
 
         @JsonIgnore
