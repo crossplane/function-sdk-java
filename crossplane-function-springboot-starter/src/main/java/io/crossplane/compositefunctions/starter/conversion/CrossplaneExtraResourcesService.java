@@ -2,8 +2,19 @@ package io.crossplane.compositefunctions.starter.conversion;
 
 import com.google.protobuf.util.JsonFormat;
 
+import io.crossplane.compositefunctions.protobuf.ResourceSelector;
+import io.crossplane.compositefunctions.protobuf.Resources;
+import io.crossplane.compositefunctions.starter.exception.CrossplaneUnexpectedItemsException;
+import io.crossplane.compositefunctions.starter.exception.CrossplaneUnmarshallException;
+import io.fabric8.kubernetes.api.model.HasMetadata;
+import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class that helps with the extra resources map and also to create ResourceSelector in order to get extra resources
@@ -18,7 +29,7 @@ public class CrossplaneExtraResourcesService {
     private static final Logger logger = LoggerFactory.getLogger(CrossplaneExtraResourcesService.class);
     private final JsonFormat.Printer printer = JsonFormat.printer();
 
-    /*
+
     public <T> Optional<T> getExtraResource(Map<String, Resources> extraResources, String resourceName, Class<T> clazz) {
         return getExtraResources(extraResources, resourceName, 1, clazz).get(0);
     }
@@ -54,5 +65,5 @@ public class CrossplaneExtraResourcesService {
         return Map.of(resourceName, resourceSelector);
     }
 
-     */
+
 }
