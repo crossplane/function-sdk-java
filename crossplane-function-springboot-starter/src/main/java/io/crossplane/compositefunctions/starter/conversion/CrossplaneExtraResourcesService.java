@@ -4,7 +4,6 @@ import com.google.protobuf.util.JsonFormat;
 
 import io.crossplane.compositefunctions.protobuf.ResourceSelector;
 import io.crossplane.compositefunctions.protobuf.Resources;
-import io.crossplane.compositefunctions.starter.exception.CrossplaneUnexpectedItemsException;
 import io.crossplane.compositefunctions.starter.exception.CrossplaneUnmarshallException;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -31,17 +30,19 @@ public class CrossplaneExtraResourcesService {
 
 
     public <T> Optional<T> getExtraResource(Map<String, Resources> extraResources, String resourceName, Class<T> clazz) {
-        return getExtraResources(extraResources, resourceName, 1, clazz).get(0);
+        List<Optional<T>> resources = getExtraResources(extraResources, resourceName, 1, clazz);
+
+        if (resources.isEmpty()) {
+            return Optional.empty();
+        }
+        return resources.get(0);
     }
 
     public <T> List<Optional<T>> getExtraResources(Map<String, Resources> extraResources, String resourceName, int expectedResources, Class<T> clazz) {
         List<Optional<T>> result = new ArrayList<>();
         Resources resources = extraResources.get(resourceName);
 
-        if (resources != null ) {
-            if (resources.getItemsCount() != expectedResources) {
-                throw new CrossplaneUnexpectedItemsException("Unexpected number of resources. Expected " + expectedResources + " but got " + resources.getItemsCount() + ".");
-            }
+        if (resources != null &&  resources.getItemsCount() == expectedResources) {
             for (int i = 0; i < expectedResources; i++) {
                 try {
                     logger.debug("We have an extra resource " + clazz.getSimpleName());
