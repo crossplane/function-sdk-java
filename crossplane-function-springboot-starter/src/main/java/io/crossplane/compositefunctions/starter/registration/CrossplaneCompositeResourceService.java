@@ -74,7 +74,6 @@ public class CrossplaneCompositeResourceService {
     public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T compositionDefinition) { //}, Class functionMixin) {
 
         CompositeResourceDefinition compositeResourceDefinition = new CompositeResourceDefinition();
-        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getCRDName()));
 
         CompositeResourceDefinitionSpec spec = new CompositeResourceDefinitionSpec();
         spec.setGroup(compositionDefinition.getGroup());
@@ -99,10 +98,11 @@ public class CrossplaneCompositeResourceService {
         Versions versions = new Versions();
         versions.setName(compositionDefinition.getVersion());
 
-        // This is not 100%. isStorage vs referencable. Need to check the crossplan docs
+        // This is not 100%. isStorage vs referencable. Need to check the crossplane docs
         versions.setReferenceable(compositionDefinition.isStorage());
         versions.setServed(compositionDefinition.isServed());
 
+        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(namePrefix + compositionDefinition.getCRDName()));
 
         Schema schema = new Schema();
         schema.setOpenAPIV3Schema(getOpenAPIV3Schema(compositionDefinition.getClass(), CrossplaneCompositeResourceMixin.class));
