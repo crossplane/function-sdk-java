@@ -1,10 +1,13 @@
 package io.crossplane.compositefunctions.starter.registration;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 import com.fasterxml.jackson.module.jsonSchema.jakarta.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.jakarta.JsonSchemaGenerator;
+import com.fasterxml.jackson.module.jsonSchema.jakarta.factories.SchemaFactoryWrapper;
+import com.fasterxml.jackson.module.jsonSchema.jakarta.factories.VisitorContext;
 import com.fasterxml.jackson.module.jsonSchema.jakarta.types.ArraySchema;
 import io.crossplane.apiextensions.v1.compositeresourcedefinitionspec.versions.schema.OpenAPIV3Schema;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
@@ -29,7 +32,17 @@ public class CrossplaneJsonSchemaGenerator {
             //Add mixin class to ignore id field as OpenShift does not support it.
             mapper.addMixIn(clazz, mixin);
             // apper.addMixIn(ObjectMeta.class, MetadataIgnorer.class);
-            JsonSchemaGenerator generator = new JsonSchemaGenerator(mapper);
+
+            SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+            visitor.setVisitorContext(new VisitorContext(){
+                @Override
+                public String addSeenSchemaUri(JavaType aSeenSchema) {
+                    return javaTypeToUrn(aSeenSchema);
+                }
+            });
+
+
+            JsonSchemaGenerator generator = new JsonSchemaGenerator(mapper, visitor);
             JsonSchema jsonSchema = generator.generateSchema(clazz);
 
             removeIdField(jsonSchema);
