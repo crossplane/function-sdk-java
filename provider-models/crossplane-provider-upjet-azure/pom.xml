@@ -16,7 +16,6 @@
     <version>${modelrevision}</version>
     <properties>
         <modelrevision>1.0.0-SNAPSHOT</modelrevision>
-        <maven.javadoc.skip>false</maven.javadoc.skip>
     </properties>
 
     <!-- DEPENDENCIES -->
