@@ -1,4 +1,4 @@
-name: Release a new version
+name: Release a new version of a provider model
 
 on:
   workflow_dispatch: 
