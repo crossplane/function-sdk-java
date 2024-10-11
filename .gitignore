@@ -28,3 +28,5 @@ replay_pid*
 .idea/
 target/
 generated/
+
+provider-models/**/src/main/resources/kubernetes/*.yaml

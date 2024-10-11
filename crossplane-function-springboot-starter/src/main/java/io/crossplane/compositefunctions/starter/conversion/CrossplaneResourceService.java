@@ -1,7 +1,7 @@
 package io.crossplane.compositefunctions.starter.conversion;
 
 import com.google.protobuf.util.JsonFormat;
-import io.crossplane.compositefunctions.protobuf.State;
+import io.crossplane.compositefunctions.protobuf.v1.State;
 import io.crossplane.compositefunctions.starter.exception.CrossplaneUnmarshallException;
 import io.fabric8.kubernetes.client.utils.Serialization;
 

@@ -3,19 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.3</version>
-    </parent>
 
-    <groupId>io.crossplane.compositefunctions</groupId>
-    <artifactId>crossplane-parent</artifactId>
+    <groupId>io.crossplane.providers</groupId>
+    <artifactId>crossplane-providers-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 
     <url>https://crossplane.io/</url>
-    <description>Crossplane parent pom for composite functions</description>
+    <description>Crossplane parent pom for provider models</description>
 
     <properties>
         <revision>1.0.0-SNAPSHOT</revision>
@@ -23,18 +18,11 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-
+        <maven.javadoc.skip>true</maven.javadoc.skip>
         <!-- Dependency versions -->
         <spring-boot.version>3.3.3</spring-boot.version>
         <kubernetes-client.version>6.13.3</kubernetes-client.version>
-        <os-maven-plugin.version>1.7.1</os-maven-plugin.version>
-        <protobuf.version>3.25.1</protobuf.version>
-        <grpc.version>1.63.0</grpc.version>
-        <jakarta-annotation.version>1.3.5</jakarta-annotation.version>
-        <slf4j.version>2.0.13</slf4j.version>
         <jackson-databind.version>2.17.1</jackson-databind.version>
-        <bouncycastle.version>1.77</bouncycastle.version>
-        <grpc-spring-boot-starter.version>3.1.0.RELEASE</grpc-spring-boot-starter.version>
 
         <!-- Plugin versions -->
         <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
@@ -45,38 +33,10 @@
         <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
     </properties>
 
-    <modules>
-        <module>crossplane-crd-model</module>
-        <module>crossplane-protobuf-model</module>
-        <module>crossplane-function-base</module>
-        <module>crossplane-function-springboot-starter</module>
-        <module>crossplane-providers-parent</module>
-        <module>crossplane-function-example</module>
-    </modules>
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>io.crossplane.compositefunctions</groupId>
-                <artifactId>crossplane-crd-model</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.crossplane.compositefunctions</groupId>
-                <artifactId>crossplane-protobuf-model</artifactId>
-                <version>${revision}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.crossplane.compositefunctions</groupId>
-                <artifactId>crossplane-function-base</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
-            <dependency>
-                <groupId>io.crossplane.compositefunctions</groupId>
-                <artifactId>crossplane-function-springboot-starter</artifactId>
-                <version>${revision}</version>
-            </dependency>
 
             <dependency>
                 <groupId>io.fabric8</groupId>
@@ -88,49 +48,11 @@
 
 
             <dependency>
-                <groupId>com.google.protobuf</groupId>
-                <artifactId>protobuf-java</artifactId>
-                <version>${protobuf.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.google.protobuf</groupId>
-                <artifactId>protobuf-java-util</artifactId>
-                <version>${protobuf.version}</version>
-            </dependency>
-
-            <!-- Protobuf -->
-            <dependency>
-                <groupId>io.grpc</groupId>
-                <artifactId>grpc-bom</artifactId>
-                <version>${grpc.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>jakarta.annotation</groupId>
-                <artifactId>jakarta.annotation-api</artifactId>
-                <version>${jakarta-annotation.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson-databind.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.bouncycastle</groupId>
-                <artifactId>bcpkix-jdk18on</artifactId>
-                <version>${bouncycastle.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>net.devh</groupId>
-                <artifactId>grpc-server-spring-boot-starter</artifactId>
-                <version>${grpc-spring-boot-starter.version}</version>
-            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

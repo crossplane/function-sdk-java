@@ -2,8 +2,8 @@ package io.crossplane.compositefunctions.starter.conversion;
 
 import com.google.protobuf.util.JsonFormat;
 
-import io.crossplane.compositefunctions.protobuf.ResourceSelector;
-import io.crossplane.compositefunctions.protobuf.Resources;
+import io.crossplane.compositefunctions.protobuf.v1.ResourceSelector;
+import io.crossplane.compositefunctions.protobuf.v1.Resources;
 import io.crossplane.compositefunctions.starter.exception.CrossplaneUnmarshallException;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.client.utils.Serialization;

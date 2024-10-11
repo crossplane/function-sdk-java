@@ -1,8 +1,8 @@
 package io.crossplane.compositefunctions.base;
 
-import io.crossplane.compositefunctions.protobuf.Credentials;
-import io.crossplane.compositefunctions.protobuf.Resources;
-import io.crossplane.compositefunctions.protobuf.State;
+import io.crossplane.compositefunctions.protobuf.v1.Credentials;
+import io.crossplane.compositefunctions.protobuf.v1.Resources;
+import io.crossplane.compositefunctions.protobuf.v1.State;
 
 import java.util.Map;
 

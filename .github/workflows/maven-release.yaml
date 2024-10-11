@@ -5,7 +5,7 @@ on:
     inputs:
       releaseversion:
         type: string
-        description: 'Version to reelase'
+        description: 'Version to release'
         required: true
 
 

@@ -1,7 +1,7 @@
 package io.crossplane.compositefunctions.base;
 
-import io.crossplane.compositefunctions.protobuf.ResourceSelector;
-import io.crossplane.compositefunctions.protobuf.Result;
+import io.crossplane.compositefunctions.protobuf.v1.ResourceSelector;
+import io.crossplane.compositefunctions.protobuf.v1.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;

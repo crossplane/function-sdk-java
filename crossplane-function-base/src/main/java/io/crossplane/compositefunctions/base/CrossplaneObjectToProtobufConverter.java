@@ -3,7 +3,7 @@ package io.crossplane.compositefunctions.base;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
-import io.crossplane.compositefunctions.protobuf.Resource;
+import io.crossplane.compositefunctions.protobuf.v1.Resource;
 
 /**
  * Helper class for converting Java Objects into protobuf Structs within the Resource object

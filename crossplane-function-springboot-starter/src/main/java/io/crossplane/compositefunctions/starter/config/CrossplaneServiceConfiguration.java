@@ -3,10 +3,8 @@ package io.crossplane.compositefunctions.starter.config;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneExtraResourcesService;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneObservableService;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneResourceService;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Autoconfiguration for the crossplane services.

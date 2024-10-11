@@ -1,11 +1,11 @@
 package io.crossplane.compositefunctions.base;
 
 
-import io.crossplane.compositefunctions.protobuf.FunctionRunnerServiceGrpc;
-import io.crossplane.compositefunctions.protobuf.Requirements;
-import io.crossplane.compositefunctions.protobuf.RunFunctionRequest;
-import io.crossplane.compositefunctions.protobuf.RunFunctionResponse;
-import io.crossplane.compositefunctions.protobuf.State;
+import io.crossplane.compositefunctions.protobuf.v1.FunctionRunnerServiceGrpc;
+import io.crossplane.compositefunctions.protobuf.v1.Requirements;
+import io.crossplane.compositefunctions.protobuf.v1.RunFunctionRequest;
+import io.crossplane.compositefunctions.protobuf.v1.RunFunctionResponse;
+import io.crossplane.compositefunctions.protobuf.v1.State;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

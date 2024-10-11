@@ -1,0 +1,59 @@
+name: Release a new version
+
+on:
+  workflow_dispatch: 
+    inputs:
+      releaseversion:
+        type: string
+        description: 'Version to release'
+        required: true
+      provider:
+        type: string
+        description: 'Version to release'
+        required: true
+        options:
+          - provider-upjet-azure
+          - provider-upjet-azuread
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+          cache: maven
+          server-id: central
+          server-username: MAVEN_CENTRAL_USERNAME # env variable for username in deploy
+          server-password: MAVEN_CENTRAL_TOKEN # env variable for token in deploy
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
+      - name: Fetch crds
+        working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
+        run : ./fecth.sh
+      - name: List crds
+        working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
+        run : ls
+      #- name: Set the revision property
+      #  run: mvn versions:set-property -Dproperty=revision "-DnewVersion=${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
+      #- name: Build with Maven
+      #  run: mvn -B deploy --file pom.xml -Pdeploy
+      #  env:
+      #    MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      #    MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+      #    MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+      #    MAVEN_OPTS: "-Xmx2048m"
+      #- name: Create release
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    tag: "${{ github.event.inputs.releaseversion }}"
+      #  run: |
+      #    gh release create "$tag" \
+      #        --repo="$GITHUB_REPOSITORY" \
+      #        --title="v${tag#v}" \
+      #        --generate-notes \
+      #        --target "$GITHUB_SHA"
