@@ -18,7 +18,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-        <maven.javadoc.skip>true</maven.javadoc.skip>
         <!-- Dependency versions -->
         <spring-boot.version>3.3.3</spring-boot.version>
         <kubernetes-client.version>6.13.3</kubernetes-client.version>
@@ -113,7 +112,9 @@
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <doclint>all,missing</doclint>
+                    <excludePackageNames>io.upbound.*</excludePackageNames>
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
