@@ -9,7 +9,7 @@ on:
         required: true
       provider:
         type: string
-        description: 'Version to release'
+        description: 'Provider to release'
         required: true
         options:
           - provider-upjet-azure
