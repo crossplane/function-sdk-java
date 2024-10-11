@@ -33,6 +33,8 @@ jobs:
           gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }} # Value of the GPG private key to import
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
       - name: Fetch crds
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
         run : ./fetch.sh
       - name: List crds
