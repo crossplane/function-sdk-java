@@ -34,7 +34,7 @@ jobs:
           gpg-passphrase: MAVEN_GPG_PASSPHRASE # env variable for GPG private key passphrase
       - name: Fetch crds
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
-        run : ./fecth.sh
+        run : ./fetch.sh
       - name: List crds
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
         run : ls
