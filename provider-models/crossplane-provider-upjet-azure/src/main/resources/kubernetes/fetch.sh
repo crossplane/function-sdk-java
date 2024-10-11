@@ -2,6 +2,13 @@
 
 release="v1.7.0"
 
+if [ $# -eq 1 ]
+  then
+    release="v$1"
+fi
+
+echo "Fetching release: ${release}"
+
 crds=$(gh api --jq '.[].name' "/repos/crossplane-contrib/provider-upjet-azure/contents/package/crds/?ref=${release}")
 
 

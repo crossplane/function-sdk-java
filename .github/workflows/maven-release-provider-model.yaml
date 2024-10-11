@@ -36,26 +36,28 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
-        run : ./fetch.sh
+        run : ./fetch.sh "${{ github.event.inputs.releaseversion }}"
       - name: List crds
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}/src/main/resources/kubernetes"
         run : ls
-      #- name: Set the revision property
-      #  run: mvn versions:set-property -Dproperty=revision "-DnewVersion=${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
-      #- name: Build with Maven
-      #  run: mvn -B deploy --file pom.xml -Pdeploy
-      #  env:
-      #    MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-      #    MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-      #    MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
-      #    MAVEN_OPTS: "-Xmx2048m"
-      #- name: Create release
-      #  env:
-      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #    tag: "${{ github.event.inputs.releaseversion }}"
-      #  run: |
-      #    gh release create "$tag" \
-      #        --repo="$GITHUB_REPOSITORY" \
-      #        --title="v${tag#v}" \
-      #        --generate-notes \
-      #        --target "$GITHUB_SHA"
+      - name: Set the revision property
+        working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}"
+        run: mvn versions:set-property -Dproperty=modelrevision "-DnewVersion=${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
+      - name: Build with Maven
+        working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}"
+        run: mvn -B deploy --file pom.xml -Pdeploy
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_TOKEN: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          MAVEN_OPTS: "-Xmx2048m"
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: "${{ github.event.inputs.releaseversion }}"
+          provider: "${{ github.event.inputs.provider }}"
+        run: |
+          gh release create "$provider-$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="$provider--v${tag#v}" \
+              --target "$GITHUB_SHA"
