@@ -18,6 +18,7 @@ on:
           - provider-upjet-gcp
           - provider-upjet-github
           - provider-terraform
+          - provider-kubernetes
 
 
 jobs:
