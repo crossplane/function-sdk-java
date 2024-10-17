@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.crossplane.providers</groupId>
         <artifactId>crossplane-providers-parent</artifactId>
-        <version>1.17.0-beta</version>
+        <version>1.17.0-charlie</version>
     </parent>
 
     <artifactId>crossplane-provider-upjet-azuread-model</artifactId>

@@ -112,7 +112,7 @@
                 <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <doclint>all,missing</doclint>
-                    <excludePackageNames>io.upbound.*</excludePackageNames>
+                    <excludePackageNames>io.upbound.*,io.crossplane.*</excludePackageNames>
                 </configuration>
 
                 <executions>

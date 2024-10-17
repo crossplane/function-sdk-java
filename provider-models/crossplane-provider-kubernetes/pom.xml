@@ -9,8 +9,8 @@
         <version>1.17.0-charlie</version>
     </parent>
 
-    <artifactId>crossplane-provider-upjet-aws-model</artifactId>
-    <description>Crossplane models for the AWS provider</description>
+    <artifactId>crossplane-provider-kubernetes-model</artifactId>
+    <description>Crossplane models for the Kubernetes provider</description>
 
 
     <version>${modelrevision}</version>
