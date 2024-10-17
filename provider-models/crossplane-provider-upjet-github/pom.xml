@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- PROJECT -->
+    <parent>
+        <groupId>io.crossplane.providers</groupId>
+        <artifactId>crossplane-providers-parent</artifactId>
+        <version>1.17.0-beta</version>
+    </parent>
+
+    <artifactId>crossplane-provider-upjet-github-model</artifactId>
+    <description>Crossplane models for the Github provider</description>
+
+
+    <version>${modelrevision}</version>
+    <properties>
+        <modelrevision>1.0.0-SNAPSHOT</modelrevision>
+    </properties>
+
+    <!-- DEPENDENCIES -->
+    <dependencies>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>kubernetes-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>generator-annotations</artifactId>
+        </dependency>
+    </dependencies>
+    <!-- BUILD -->
+    <build>
+        <!-- PLUGINS -->
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>java-generator-maven-plugin</artifactId>
+                <version>${kubernetes-client.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>src/main/resources/kubernetes</source>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
