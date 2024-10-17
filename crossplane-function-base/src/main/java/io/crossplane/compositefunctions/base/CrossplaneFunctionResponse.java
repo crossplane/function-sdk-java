@@ -1,5 +1,6 @@
 package io.crossplane.compositefunctions.base;
 
+import io.crossplane.compositefunctions.protobuf.v1.Condition;
 import io.crossplane.compositefunctions.protobuf.v1.ResourceSelector;
 import io.crossplane.compositefunctions.protobuf.v1.Result;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public record CrossplaneFunctionResponse(Map<String, Object> desiredResources,
                                          Map<String, ResourceSelector> resourceSelectors,
-                                         List<Result> results) {
+                                         List<Result> results, List<Condition> conditions) {
 
     //
     //
@@ -26,6 +27,6 @@ public record CrossplaneFunctionResponse(Map<String, Object> desiredResources,
      * Create an empty response with all fields initiated
       */
     public CrossplaneFunctionResponse() {
-        this(new HashMap<>(), new HashMap<>(), new ArrayList<>());
+        this(new HashMap<>(), new HashMap<>(), new ArrayList<>(), new ArrayList<>());
     }
 }

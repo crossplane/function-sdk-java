@@ -54,9 +54,12 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
                 responseBuilder.setRequirements(requirements);
             }
 
-
             if (! crossplaneFunctionResponse.results().isEmpty()) {
                 responseBuilder.addAllResults(crossplaneFunctionResponse.results());
+            }
+
+            if (! crossplaneFunctionResponse.conditions().isEmpty()) {
+                responseBuilder.addAllConditions(crossplaneFunctionResponse.conditions());
             }
 
             if (desiredBuilder.getResourcesCount() > 0) {
