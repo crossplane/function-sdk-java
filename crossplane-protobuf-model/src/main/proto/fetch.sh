@@ -1,6 +1,6 @@
 #!/bin/bash
 
-release="v1.17.1"
+release="v1.18.0"
 file="run_function.proto"
 gh api   -H "Accept: application/vnd.github.raw+json"  "/repos/crossplane/crossplane/contents/apis/apiextensions/fn/proto/v1/${file}?ref=${release}" > $file
 
