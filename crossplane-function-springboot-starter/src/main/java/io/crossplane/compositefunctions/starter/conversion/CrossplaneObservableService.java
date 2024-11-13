@@ -9,6 +9,8 @@ import io.fabric8.kubernetes.client.utils.Serialization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -41,5 +43,23 @@ public class CrossplaneObservableService {
         }
         return result;
     }
+
+    public Map<String, String> getObservableConnectionDetails(String resourceName, State observedState) {
+        Resource observedResource = observedState.getResourcesOrDefault(resourceName, null);
+        Map<String, String> result = new HashMap<>();
+        if (observedResource != null) {
+            try {
+                logger.debug("We have an observed connectionDetails for " + resourceName);
+                observedResource.getConnectionDetailsMap().forEach((key, value) ->
+                        result.put(key, value.toStringUtf8())
+                );
+            } catch (Exception e) {
+
+                throw new CrossplaneUnmarshallException("Error when unmarshalling the connectionDetails for " + resourceName, e);
+            }
+        }
+        return result;
+    }
+
 
 }

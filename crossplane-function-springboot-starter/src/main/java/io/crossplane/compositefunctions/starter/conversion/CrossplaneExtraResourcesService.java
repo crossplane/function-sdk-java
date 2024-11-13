@@ -11,9 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 
 /**
  * Class that helps with the extra resources map and also to create ResourceSelector in order to get extra resources
@@ -55,6 +57,39 @@ public class CrossplaneExtraResourcesService {
         }
         return result;
     }
+
+    public Map<String, String> getConnectionDetails(Map<String, Resources> extraResources, String resourceName) {
+        List<Map<String, String>> resources = getConnectionDetails(extraResources, resourceName, 1);
+
+        if (resources.isEmpty()) {
+            return new HashMap<>();
+        }
+        return resources.get(0);
+    }
+
+    public List<Map<String, String>> getConnectionDetails(Map<String, Resources> extraResources, String resourceName, int expectedResources) {
+        List<Map<String, String>> result = new ArrayList<>();
+        Resources resources = extraResources.get(resourceName);
+
+        if (resources != null &&  resources.getItemsCount() == expectedResources) {
+            for (int i = 0; i < expectedResources; i++) {
+                try {
+                    logger.debug("We have connectiondetails " + resourceName);
+                    Map<String, String> currentDetails = new HashMap<>();
+                    resources.getItems(i).getConnectionDetailsMap().forEach((key, value) ->
+                            currentDetails.put(key, value.toStringUtf8())
+                    );
+                    result.add(currentDetails);
+                } catch (Exception e) {
+                    throw new CrossplaneUnmarshallException("Error when unmarshalling the connectionDetails", e);
+                }
+            }
+
+        }
+        return result;
+    }
+
+
 
     public Map<String, ResourceSelector> createExtraResourcesSelector(String resourceName, HasMetadata type) {
         ResourceSelector resourceSelector = ResourceSelector.newBuilder()
