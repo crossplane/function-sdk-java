@@ -47,7 +47,7 @@ jobs:
         run : ls
       - name: Set the revision property
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}"
-        run: mvn versions:set-property -Dproperty=modelrevision "-DnewVersion=${{ github.event.inputs.releaseversion }}.1" -DgenerateBackupPoms=false
+        run: mvn versions:set-property -Dproperty=modelrevision "-DnewVersion=${{ github.event.inputs.releaseversion }}" -DgenerateBackupPoms=false
       - name: Build with Maven
         working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}"
         run: mvn -B deploy --file pom.xml -Pdeploy
@@ -59,7 +59,7 @@ jobs:
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: "${{ github.event.inputs.releaseversion }}.1"
+          tag: "${{ github.event.inputs.releaseversion }}"
           provider: "${{ github.event.inputs.provider }}"
         run: |
           gh release create "$provider-$tag" \
