@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.crossplane.providers</groupId>
         <artifactId>crossplane-providers-parent</artifactId>
-        <version>1.18.0-charlie</version>
+        <version>1.20-alpha</version>
     </parent>
 
     <artifactId>crossplane-provider-upjet-azure-model</artifactId>
