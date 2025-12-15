@@ -9,6 +9,7 @@
         <version>1.20-alpha</version>
     </parent>
 
+    <name>Crossplane Provider Azure</name>
     <artifactId>crossplane-provider-upjet-azure-model</artifactId>
     <description>Crossplane models for the Azure upjet based provider</description>
 

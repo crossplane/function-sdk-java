@@ -6,9 +6,10 @@
     <parent>
         <groupId>io.crossplane.providers</groupId>
         <artifactId>crossplane-providers-parent</artifactId>
-        <version>1.18.0-charlie</version>
+        <version>1.20-alpha</version>
     </parent>
 
+    <name>Crossplane Provider GCP</name>
     <artifactId>crossplane-provider-upjet-gcp-model</artifactId>
     <description>Crossplane models for the GCP provider</description>
 

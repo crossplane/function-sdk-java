@@ -9,6 +9,7 @@
         <version>1.20-alpha</version>
     </parent>
 
+    <name>Crossplane Provider Kubernetes</name>
     <artifactId>crossplane-provider-kubernetes-model</artifactId>
     <description>Crossplane models for the Kubernetes provider</description>
 

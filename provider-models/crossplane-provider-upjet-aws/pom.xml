@@ -9,6 +9,7 @@
         <version>1.20-alpha</version>
     </parent>
 
+    <name>Crossplane Provider AWS</name>
     <artifactId>crossplane-provider-upjet-aws-model</artifactId>
     <description>Crossplane models for the AWS provider</description>
 

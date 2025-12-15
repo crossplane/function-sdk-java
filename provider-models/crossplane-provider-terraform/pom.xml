@@ -9,6 +9,7 @@
         <version>1.20-alpha</version>
     </parent>
 
+    <name>Crossplane Provider Terraform</name>
     <artifactId>crossplane-provider-terraform-model</artifactId>
     <description>Crossplane models for the Terraform provider</description>
 
