@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
 
+    <name>Crossplane Provider Parent</name>
     <groupId>io.crossplane.providers</groupId>
     <artifactId>crossplane-providers-parent</artifactId>
     <version>${revision}</version>
@@ -19,18 +20,18 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
         <!-- Dependency versions -->
-        <spring-boot.version>3.3.3</spring-boot.version>
-        <kubernetes-client.version>6.13.3</kubernetes-client.version>
-        <jackson-databind.version>2.17.1</jackson-databind.version>
+        <spring-boot.version>4.0.0</spring-boot.version>
+        <kubernetes-client.version>7.4.0</kubernetes-client.version>
+        <jackson-databind.version>2.20.1</jackson-databind.version>
 
         <!-- Plugin versions -->
-        <flatten-maven-plugin.version>1.6.0</flatten-maven-plugin.version>
-        <central-publishing-maven-plugin.version>0.4.0</central-publishing-maven-plugin.version>
-        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.7.0</maven-javadoc-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
+        <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
-        <maven-gpg-plugin.version>3.2.4</maven-gpg-plugin.version>
-        <build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+        <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+        <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
     </properties>
 
 
