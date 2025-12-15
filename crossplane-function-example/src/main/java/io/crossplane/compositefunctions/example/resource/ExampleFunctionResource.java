@@ -5,8 +5,10 @@ import io.crossplane.compositefunctions.base.CrossplaneFunctionRequest;
 import io.crossplane.compositefunctions.base.CrossplaneFunctionResponse;
 import io.crossplane.compositefunctions.example.model.XBuckets;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneResourceService;
-import net.devh.boot.grpc.server.service.GrpcService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.grpc.server.service.GrpcService;
+
 
 import java.util.Optional;
 

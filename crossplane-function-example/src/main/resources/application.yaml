@@ -2,7 +2,6 @@ spring:
   profiles:
     active: development
 
-
-grpc:
-  server:
-    port: 9443
+  grpc:
+    server:
+      port: 9443
