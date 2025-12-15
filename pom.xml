@@ -14,6 +14,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
 
+    <name>Crossplane Parent</name>
     <url>https://crossplane.io/</url>
     <description>Crossplane parent pom for composite functions</description>
 

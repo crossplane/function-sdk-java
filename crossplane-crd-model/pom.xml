@@ -11,6 +11,8 @@
 
     <artifactId>crossplane-crd-model</artifactId>
     <description>Crossplane coposite function CRDS</description>
+
+    <name>Crossplane CRD Models</name>
     <!-- DEPENDENCIES -->
     <dependencies>
         <dependency>

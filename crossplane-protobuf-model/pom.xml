@@ -9,6 +9,7 @@
         <version>${revision}</version>
     </parent>
 
+    <name>Crossplane Protobuf Model</name>
     <artifactId>crossplane-protobuf-model</artifactId>
     <description>Crossplane composite function protobuf</description>
     <!-- DEPENDENCIES -->
