@@ -40,8 +40,13 @@ public class CrossplaneCompositeResourceService {
     public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(List<String> pipelineFunctions,
                                                                                              T compositionDefinition,
                                                                                              KubernetesClient kubernetesClient) {
+        registerOrUpdateCompositeResource(pipelineFunctions, compositionDefinition, kubernetesClient, false);
+    }
+    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(List<String> pipelineFunctions,
+                                                                                             T compositionDefinition,
+                                                                                             KubernetesClient kubernetesClient, boolean legacy) {
 
-        CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(compositionDefinition);
+        CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(compositionDefinition, legacy);
 
         registerOrUpdateCompositeResourceDefinition(compositeResourceDefinition, kubernetesClient);
 
@@ -71,28 +76,40 @@ public class CrossplaneCompositeResourceService {
      * @return A CompositeResourceDefintion based on the provided CustomResource
      * @param <T> Must extend CustomResource
      */
-    public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T compositionDefinition) { //}, Class functionMixin) {
+
+    public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T compositionDefinition) {
+        return createCompositeResourceDefinition(compositionDefinition, false);
+    }
+
+    /**
+     * Create a CompositeResourceDefinition based on the provided CustomResource
+     * If Namespaced, ClaimNames will be added in addition to Names.
+     *
+     * @param compositionDefinition The composition definition
+     * @return A CompositeResourceDefintion based on the provided CustomResource
+     * @param <T> Must extend CustomResource
+     * @param legacy True if legacy scope should be used, otherwise the type of the compositionDefinition will be used to determine scope
+     */
+    public static <T extends CustomResource<?, Void>> CompositeResourceDefinition createCompositeResourceDefinition(T compositionDefinition, boolean legacy) { //}, Class functionMixin) {
 
         CompositeResourceDefinition compositeResourceDefinition = new CompositeResourceDefinition();
 
         CompositeResourceDefinitionSpec spec = new CompositeResourceDefinitionSpec();
         spec.setGroup(compositionDefinition.getGroup());
 
-        String namePrefix = "";
 
-        if (compositionDefinition instanceof Namespaced) {
-            ClaimNames claimNames = new ClaimNames();
-            claimNames.setKind(compositionDefinition.getKind());
-            claimNames.setPlural(compositionDefinition.getPlural());
-            claimNames.setSingular(compositionDefinition.getSingular());
-            spec.setClaimNames(claimNames);
-            namePrefix = "x";
+        if (legacy) {
+            spec.setScope(CompositeResourceDefinitionSpec.Scope.LEGACYCLUSTER);
+        } else if (compositionDefinition instanceof Namespaced) {
+            spec.setScope(CompositeResourceDefinitionSpec.Scope.NAMESPACED);
+        } else {
+            spec.setScope(CompositeResourceDefinitionSpec.Scope.CLUSTER);
         }
 
         Names names = new Names();
-        names.setKind(namePrefix + compositionDefinition.getKind());
-        names.setPlural(namePrefix + compositionDefinition.getPlural());
-        names.setSingular(namePrefix + compositionDefinition.getSingular());
+        names.setKind(compositionDefinition.getKind());
+        names.setPlural(compositionDefinition.getPlural());
+        names.setSingular(compositionDefinition.getSingular());
         spec.setNames(names);
 
         Versions versions = new Versions();
@@ -102,7 +119,7 @@ public class CrossplaneCompositeResourceService {
         versions.setReferenceable(compositionDefinition.isStorage());
         versions.setServed(compositionDefinition.isServed());
 
-        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(namePrefix + compositionDefinition.getCRDName()));
+        compositeResourceDefinition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getCRDName()));
 
         Schema schema = new Schema();
         schema.setOpenAPIV3Schema(getOpenAPIV3Schema(compositionDefinition.getClass(), CrossplaneCompositeResourceMixin.class));
