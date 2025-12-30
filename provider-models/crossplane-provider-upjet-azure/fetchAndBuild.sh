@@ -50,7 +50,7 @@ if [ "$split" = "true" ] ; then
   for group in $groups; do
     mvn versions:set-property -Dproperty=modelDirectory -DnewVersion="/${group}" -DgenerateBackupPoms=false
     mvn versions:set-property -Dproperty=modelGroup -DnewVersion="${group}" -DgenerateBackupPoms=false
-    mvn -B deploy --file pom.xml -Pdeploy -Dmodelrevision="${javaRelease}" -DmodelDirectory="/${group}" -DmodelGroup="${group}"
+    mvn -B clean deploy --file pom.xml -Pdeploy -Dmodelrevision="${javaRelease}" -DmodelDirectory="/${group}" -DmodelGroup="${group}"
   done
 fi
 
