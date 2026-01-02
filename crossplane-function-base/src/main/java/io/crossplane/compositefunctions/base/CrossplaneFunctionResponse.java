@@ -14,10 +14,13 @@ import java.util.Map;
  * @param desiredResources Map of the desired resources
  * @param resourceSelectors Map of the resource selectors for any extra resources
  * @param results List of the results
+ * @param conditions List of the conditions of the function response
+ * @param ttl Time to live for the response in positive seconds. This is an alpha feature, and needs to be explicitly enabled in Crossplane.
  */
 public record CrossplaneFunctionResponse(Map<String, Object> desiredResources,
                                          Map<String, ResourceSelector> resourceSelectors,
-                                         List<Result> results, List<Condition> conditions) {
+                                         List<Result> results, List<Condition> conditions,
+                                         long ttl) {
 
     //
     //
@@ -27,6 +30,6 @@ public record CrossplaneFunctionResponse(Map<String, Object> desiredResources,
      * Create an empty response with all fields initiated
       */
     public CrossplaneFunctionResponse() {
-        this(new HashMap<>(), new HashMap<>(), new ArrayList<>(), new ArrayList<>());
+        this(new HashMap<>(), new HashMap<>(), new ArrayList<>(), new ArrayList<>(), 0);
     }
 }

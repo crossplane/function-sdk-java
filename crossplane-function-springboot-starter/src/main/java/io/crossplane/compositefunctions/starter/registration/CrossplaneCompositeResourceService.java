@@ -4,13 +4,13 @@ import io.crossplane.apiextensions.v1.CompositeResourceDefinition;
 import io.crossplane.apiextensions.v1.CompositeResourceDefinitionSpec;
 import io.crossplane.apiextensions.v1.Composition;
 import io.crossplane.apiextensions.v1.CompositionSpec;
-import io.crossplane.apiextensions.v1.compositeresourcedefinitionspec.ClaimNames;
 import io.crossplane.apiextensions.v1.compositeresourcedefinitionspec.Names;
 import io.crossplane.apiextensions.v1.compositeresourcedefinitionspec.Versions;
 import io.crossplane.apiextensions.v1.compositeresourcedefinitionspec.versions.Schema;
 import io.crossplane.apiextensions.v1.compositionspec.CompositeTypeRef;
 import io.crossplane.apiextensions.v1.compositionspec.Pipeline;
 import io.crossplane.apiextensions.v1.compositionspec.pipeline.FunctionRef;
+import io.crossplane.compositefunctions.starter.model.CrossplanePipeline;
 import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClient;
@@ -40,11 +40,29 @@ public class CrossplaneCompositeResourceService {
     public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(List<String> pipelineFunctions,
                                                                                              T compositionDefinition,
                                                                                              KubernetesClient kubernetesClient) {
-        registerOrUpdateCompositeResource(pipelineFunctions, compositionDefinition, kubernetesClient, false);
+        List<CrossplanePipeline> crossplanePipelines = pipelineFunctions.stream().map(CrossplanePipeline::new).toList();
+        registerOrUpdateCompositeResource(compositionDefinition, crossplanePipelines, false, kubernetesClient);
     }
+
+    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(T compositionDefinition,
+                                                                                             List<CrossplanePipeline> crossplanePipelines,
+                                                                                             KubernetesClient kubernetesClient) {
+        registerOrUpdateCompositeResource(compositionDefinition, crossplanePipelines, false, kubernetesClient);
+    }
+
+
     public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(List<String> pipelineFunctions,
                                                                                              T compositionDefinition,
-                                                                                             KubernetesClient kubernetesClient, boolean legacy) {
+                                                                                             KubernetesClient kubernetesClient,
+                                                                                             boolean legacy) {
+        List<CrossplanePipeline> crossplanePipelines = pipelineFunctions.stream().map(CrossplanePipeline::new).toList();
+        registerOrUpdateCompositeResource(compositionDefinition, crossplanePipelines, legacy, kubernetesClient);
+    }
+
+    public static <T extends CustomResource<?, Void>> void registerOrUpdateCompositeResource(T compositionDefinition,
+                                                                                             List<CrossplanePipeline> pipelineFunctions,
+                                                                                             boolean legacy,
+                                                                                             KubernetesClient kubernetesClient) {
 
         CompositeResourceDefinition compositeResourceDefinition = createCompositeResourceDefinition(compositionDefinition, legacy);
 
@@ -144,7 +162,7 @@ public class CrossplaneCompositeResourceService {
     }
 
     private static <T extends CustomResource<?, Void>> Composition createCompositionDefinition(
-            List<String> pipelineFunctions, T compositionDefinition) {
+            List<CrossplanePipeline> pipelineFunctions, T compositionDefinition) {
 
         Composition composition = new Composition();
 
@@ -167,11 +185,14 @@ public class CrossplaneCompositeResourceService {
         return composition;
     }
 
-    private static Pipeline createPipeline(String pipelineName) {
+    private static Pipeline createPipeline(CrossplanePipeline crossplanePipeline) {
         Pipeline pipeline = new Pipeline();
-        pipeline.setStep(pipelineName);
+        pipeline.setStep(crossplanePipeline.name());
+        if (crossplanePipeline.requirements() != null) {
+            pipeline.setRequirements(crossplanePipeline.requirements());
+        }
         FunctionRef functionRef = new FunctionRef();
-        functionRef.setName(pipelineName);
+        functionRef.setName(crossplanePipeline.functionReference());
         pipeline.setFunctionRef(functionRef);
         return pipeline;
     }

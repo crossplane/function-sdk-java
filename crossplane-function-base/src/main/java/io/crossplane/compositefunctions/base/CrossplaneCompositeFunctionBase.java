@@ -1,8 +1,10 @@
 package io.crossplane.compositefunctions.base;
 
 
+import com.google.protobuf.Duration;
 import io.crossplane.compositefunctions.protobuf.v1.FunctionRunnerServiceGrpc;
 import io.crossplane.compositefunctions.protobuf.v1.Requirements;
+import io.crossplane.compositefunctions.protobuf.v1.ResponseMeta;
 import io.crossplane.compositefunctions.protobuf.v1.RunFunctionRequest;
 import io.crossplane.compositefunctions.protobuf.v1.RunFunctionResponse;
 import io.crossplane.compositefunctions.protobuf.v1.State;
@@ -33,7 +35,7 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
             CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
-                    request.getExtraResourcesMap(), request.getCredentialsMap(),  request.getDesired());
+                    request.getRequiredResourcesMap(), request.getCredentialsMap(),  request.getDesired());
 
 
             logger.debug("Calling method with implemented logic");
@@ -49,7 +51,7 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
 
             if (! crossplaneFunctionResponse.resourceSelectors().isEmpty()) {
                 Requirements requirements = Requirements.newBuilder()
-                        .putAllExtraResources(crossplaneFunctionResponse.resourceSelectors())
+                        .putAllResources(crossplaneFunctionResponse.resourceSelectors())
                         .build();
                 responseBuilder.setRequirements(requirements);
             }
@@ -60,6 +62,14 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
 
             if (! crossplaneFunctionResponse.conditions().isEmpty()) {
                 responseBuilder.addAllConditions(crossplaneFunctionResponse.conditions());
+            }
+
+            if (crossplaneFunctionResponse.ttl() > 0) {
+                ResponseMeta.Builder responseMetaBuilder = ResponseMeta.newBuilder();
+                Duration.Builder durationBuilder = Duration.newBuilder();
+                durationBuilder.setSeconds(crossplaneFunctionResponse.ttl());
+                responseMetaBuilder.setTtl(durationBuilder);
+                responseBuilder.setMeta(responseMetaBuilder);
             }
 
             if (desiredBuilder.getResourcesCount() > 0) {
