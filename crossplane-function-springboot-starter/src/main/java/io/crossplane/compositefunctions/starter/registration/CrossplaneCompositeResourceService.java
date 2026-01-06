@@ -166,7 +166,7 @@ public class CrossplaneCompositeResourceService {
 
         Composition composition = new Composition();
 
-        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getKind().toLowerCase() + "-composition"));
+        composition.setMetadata(CrossplaneMetadataBuilder.createMetadata(compositionDefinition.getCRDName().toLowerCase()));
         CompositionSpec compositionSpec = new CompositionSpec();
 
         CompositeTypeRef compositeTypeRef = new CompositeTypeRef();
