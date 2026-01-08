@@ -9,11 +9,11 @@ import java.util.Map;
 /**
  * Holder for the request from crossplane
  * @param observedState The observedstate of the crossplane resources
- * @param extraResourcesMap A map of any extra resources requested
+ * @param requiredResourcesMap A map of any required resources requested, either dynamic or bootstrap resources
  * @param credentialsMap A map of credentials sent as input
  * @param desiredState The sum of previously called functions state. To override, create a new resource with the same name in the response
  */
-public record CrossplaneFunctionRequest(State observedState, Map<String, Resources> extraResourcesMap,
+public record CrossplaneFunctionRequest(State observedState, Map<String, Resources> requiredResourcesMap,
                                         Map<String, Credentials> credentialsMap, State desiredState) {
 
 }
