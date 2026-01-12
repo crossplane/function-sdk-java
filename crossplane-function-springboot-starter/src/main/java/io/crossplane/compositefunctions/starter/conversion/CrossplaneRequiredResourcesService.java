@@ -99,5 +99,16 @@ public class CrossplaneRequiredResourcesService {
         return Map.of(resourceName, resourceSelector);
     }
 
+    public Map<String, ResourceSelector> createRequiredResourcesSelector(String resourceName, String namespace, HasMetadata type) {
+        ResourceSelector resourceSelector = ResourceSelector.newBuilder()
+                .setApiVersion(type.getApiVersion())
+                .setKind(type.getKind())
+                .setMatchName(resourceName)
+                .setNamespace(namespace)
+                .build();
+
+        return Map.of(resourceName, resourceSelector);
+    }
+
 
 }
