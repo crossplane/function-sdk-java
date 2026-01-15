@@ -3,6 +3,8 @@ package io.crossplane.compositefunctions.base;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.protobuf.Struct;
 import com.google.protobuf.util.JsonFormat;
+import io.crossplane.compositefunctions.base.model.CrossplaneDesiredObject;
+import io.crossplane.compositefunctions.base.model.CrossplaneDesiredObjectStatus;
 import io.crossplane.compositefunctions.protobuf.v1.Resource;
 
 /**
@@ -21,7 +23,13 @@ public final class CrossplaneObjectToProtobufConverter {
     public static Resource convertToResource(Object object) {
         try {
             Resource.Builder builder = Resource.newBuilder();
-            return builder.setResource(convertToStruct(object)).build();
+
+            if (object instanceof CrossplaneDesiredObject desiredObject) {
+                object = desiredObject.object();
+                builder.setReady(desiredObject.status().getStatus());
+            }
+            builder.setResource(convertToStruct(object));
+            return builder.build();
         } catch (Exception e) {
             throw new RuntimeException("Unable to convert object to resource", e);
         }
