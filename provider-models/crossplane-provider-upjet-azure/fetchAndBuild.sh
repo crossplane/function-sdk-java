@@ -14,6 +14,10 @@ fi
 echo "Fetching release: ${release}"
 
 commitSha=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/ref/tags/${release}" -q '.object.sha')
+commitType=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/ref/tags/${release}" -q '.object.type')
+if [ "$commitType" = "tag" ] ; then
+  commitSha=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/tags/${commitSha}" -q '.object.sha')
+fi
 commitTreeSha=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/commits/${commitSha}" -q '.tree.sha')
 packageTreeSha=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/trees/${commitTreeSha}" -q '.tree[] | select(.path=="package") | .sha')
 crdsTreeSha=$(gh api "repos/crossplane-contrib/provider-upjet-azure/git/trees/${packageTreeSha}" -q '.tree[] | select(.path=="crds") | .sha')
