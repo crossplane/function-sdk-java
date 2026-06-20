@@ -1,0 +1,17 @@
+name: Debug token
+
+on:
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+        working-directory: "./provider-models/crossplane-${{ github.event.inputs.provider }}"
+        run : echo "$MAVEN_GPG_PASSPHRASE" | gpg --show-keys
+      
