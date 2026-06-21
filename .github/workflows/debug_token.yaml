@@ -12,4 +12,22 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
           MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}        
-        run : echo -e "$MAVEN_GPG_KEY" | base64 -w 0
+        run : echo -e "$MAVEN_GPG_KEY" > secret_key.asc
+      - name: Debug 2
+        env:
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
+          MAVEN_GPG_KEY: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}        
+        run : echo -e "$MAVEN_GPG_PASSPHRASE" > secret_pass.asc
+      - name: Last opp nøkkelfil
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpg-key-file
+          path: secret_key.asc
+          retention-days: 1
+      - name: Last opp nøkkelfil 2 
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpg-pass-file
+          path: secret_pass.asc
+          retention-days: 1
+ 
