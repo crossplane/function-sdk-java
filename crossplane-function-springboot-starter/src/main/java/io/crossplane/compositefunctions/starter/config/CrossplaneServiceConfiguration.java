@@ -1,8 +1,8 @@
 package io.crossplane.compositefunctions.starter.config;
 
-import io.crossplane.compositefunctions.starter.conversion.CrossplaneExtraResourcesService;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneObservableService;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneRequiredResourcesService;
+import io.crossplane.compositefunctions.starter.conversion.CrossplaneRequiredSchemasService;
 import io.crossplane.compositefunctions.starter.conversion.CrossplaneResourceService;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -15,14 +15,13 @@ public class CrossplaneServiceConfiguration {
 
 
     /**
-     * Set up services for working with extra resources
+     * Set up services for working with required schemas
      * @return the crossplaneExtraResourcesService
-     * @since 1.15
-     * @deprecated use {@link CrossplaneRequiredResourcesService} instead
+     * @since 2.2
      */
     @Bean
-    public CrossplaneExtraResourcesService crossplaneExtraResourcesService() {
-        return new CrossplaneExtraResourcesService();
+    public CrossplaneRequiredSchemasService crossplaneRequiredSchemasService() {
+        return new CrossplaneRequiredSchemasService();
     }
 
     /**

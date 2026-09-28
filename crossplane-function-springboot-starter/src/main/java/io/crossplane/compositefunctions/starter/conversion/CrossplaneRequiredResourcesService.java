@@ -48,7 +48,7 @@ public class CrossplaneRequiredResourcesService {
                     logger.debug("We have an extra resource " + clazz.getSimpleName());
                     result.add(Optional.ofNullable(Serialization.unmarshal(printer.print(resources.getItems(i).getResource()), clazz)));
                 } catch (Exception e) {
-                    throw new CrossplaneUnmarshallException("Error when unmarshalling the extra resource " + clazz.getName(), e);
+                    throw new CrossplaneUnmarshallException("Error when unmarshalling the required resource " + clazz.getName(), e);
                 }
             }
 

@@ -34,8 +34,8 @@ public abstract class CrossplaneCompositeFunctionBase extends FunctionRunnerServ
             // Copy existing state into new desired state
             desiredBuilder.putAllResources(desired.getResourcesMap());
 
-            CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getObserved(),
-                    request.getRequiredResourcesMap(), request.getCredentialsMap(),  request.getDesired());
+            CrossplaneFunctionRequest crossplaneFunctionRequest = new CrossplaneFunctionRequest(request.getMeta(), request.getObserved(),
+                    request.getRequiredResourcesMap(), request.getRequiredSchemasMap(), request.getCredentialsMap(), request.getDesired());
 
 
             logger.debug("Calling method with implemented logic");

@@ -8,7 +8,7 @@ public enum CrossplaneDesiredObjectStatus {
     NOT_READY(Ready.READY_FALSE);
 
     private final Ready status;
-    private CrossplaneDesiredObjectStatus(Ready status) {
+    CrossplaneDesiredObjectStatus(Ready status) {
         this.status = status;
     }
 

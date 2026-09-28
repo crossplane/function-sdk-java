@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.0</version>
+        <version>4.1.1</version>
     </parent>
 
     <groupId>io.crossplane.compositefunctions</groupId>
@@ -19,23 +19,23 @@
     <description>Crossplane parent pom for composite functions</description>
 
     <properties>
-        <revision>2.1.0-SNAPSHOT</revision>
+        <revision>2.2.0-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
 
         <!-- Dependency versions -->
-        <spring-boot.version>4.0.0</spring-boot.version>
-        <kubernetes-client.version>7.4.0</kubernetes-client.version>
-        <protobuf.version>3.25.8</protobuf.version>
-        <grpc.version>1.77.0</grpc.version>
+        <spring-boot.version>4.1.1</spring-boot.version>
+        <kubernetes-client.version>7.9.0</kubernetes-client.version>
+        <protobuf.version>4.35.1</protobuf.version>
+        <grpc.version>1.83.1</grpc.version>
         <guava.version>33.4.8-jre</guava.version>
         <!-- <jakarta-annotation.version>1.3.5</jakarta-annotation.version> -->
         <slf4j.version>2.0.17</slf4j.version>
         <jackson-databind.version>2.20.1</jackson-databind.version>
         <bouncycastle.version>1.77</bouncycastle.version>
-        <spring-boot-grpc-starter.version>1.0.0</spring-boot-grpc-starter.version>
+        <spring-boot-grpc-starter.version>1.1.0</spring-boot-grpc-starter.version>
 
         <!-- Plugin versions -->
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
