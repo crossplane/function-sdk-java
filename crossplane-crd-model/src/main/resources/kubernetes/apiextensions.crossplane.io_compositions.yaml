@@ -3,7 +3,7 @@ apiVersion: apiextensions.k8s.io/v1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.19.0
+    controller-gen.kubebuilder.io/version: v0.20.1
   name: compositions.apiextensions.crossplane.io
 spec:
   group: apiextensions.crossplane.io
@@ -206,10 +206,8 @@ spec:
                             - requirementName
                             type: object
                             x-kubernetes-validations:
-                            - message: Either name or matchLabels must be specified,
-                                but not both
-                              rule: (has(self.name) && !has(self.matchLabels)) ||
-                                (!has(self.name) && has(self.matchLabels))
+                            - message: name and matchLabels are mutually exclusive
+                              rule: '!(has(self.name) && has(self.matchLabels))'
                           type: array
                           x-kubernetes-list-map-keys:
                           - requirementName
